@@ -23,7 +23,7 @@ function draw() {
     grid[int(mouseX/squareWidth)-1][int(mouseY/squareWidth)-1] = Math.min(c,Math.round(Math.random())*c);
     grid[int(mouseX/squareWidth)+1][int(mouseY/squareWidth)-1] = Math.min(c,Math.round(Math.random())*c);
   } else if(started) {
-    setTimeout(() => audio.pause(), "800");
+    setTimeout(() => audio.pause(), 500);
     started = false;
   }
   
