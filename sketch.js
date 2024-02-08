@@ -15,10 +15,13 @@ let grid = Array.from({ length: canvHeight/squareWidth }, () => new Array(canvWi
 
 function draw() {
   background(51);
-  if (mouseIsPressed && mouseX < canvWidth && mouseX > 0 && mouseY > 0 && mouseY < canvHeight && grid[int(mouseX/squareWidth)][int(mouseY/squareWidth)] == 0) {
+  if (mouseIsPressed && mouseX < canvWidth-squareWidth && mouseX > squareWidth && mouseY > 0 && mouseY < canvHeight && grid[int(mouseX/squareWidth)][int(mouseY/squareWidth)] == 0) {
+    // console.log(Math.random());
     started = true;
     audio.play();
     grid[int(mouseX/squareWidth)][int(mouseY/squareWidth)] = c;
+    grid[int(mouseX/squareWidth)-1][int(mouseY/squareWidth)-1] = Math.min(c,Math.round(Math.random())*c);
+    grid[int(mouseX/squareWidth)+1][int(mouseY/squareWidth)-1] = Math.min(c,Math.round(Math.random())*c);
   } else if(started) {
     setTimeout(() => audio.pause(), "800");
     started = false;
@@ -37,9 +40,15 @@ function draw() {
   
   for(i=0;i<canvHeight/squareWidth;i++){
     for(j=0;j<canvWidth/squareWidth;j++){
-      if(j == canvHeight/squareWidth-1 && grid[i][j] > 0){
+      //stop at the bottom
+      if(j == canvHeight/squareWidth-1 && grid[i][j]){
         grid2[i][j] = grid[i][j];
-      } 
+      }
+      // speed up falling if mouse is far away
+      else if(grid[i][j] > 0 && grid[i][j+1] == 0 && grid[i][j+2] == 0 && j*squareWidth-mouseY>100){
+        grid2[i][j+2] = grid[i][j];
+      }
+      // normal falling by 1
       else if(grid[i][j] > 0 && grid[i][j+1] == 0){
         grid2[i][j+1] = grid[i][j];
       }
